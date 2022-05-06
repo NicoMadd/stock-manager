@@ -1,0 +1,57 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Product 1",
+      "quantity": 100,
+      "description": "This is product 1"
+    },
+    {
+      "id": 2,
+      "name": "Product 2",
+      "quantity": 200,
+      "description": "This is product 2"
+    },
+    {
+      "id": 3,
+      "name": "Product 3",
+      "quantity": 300,
+      "description": "This is product 3"
+    },
+    {
+      "id": 4,
+      "name": "Product 4",
+      "quantity": 400,
+      "description": "This is product 4"
+    }
+  ],
+  "inputs": [
+    {
+      "id": 1,
+      "product_id": 1,
+      "quantity": 1
+    },
+    {
+      "id": 2,
+      "product_id": 2,
+      "quantity": 2
+    },
+    {
+      "id": 3,
+      "product_id": 3,
+      "quantity": 3
+    }
+  ],
+  "outputs": [
+    {
+      "id": 1,
+      "product_id": 1,
+      "quantity": 1
+    },
+    {
+      "id": 2,
+      "product_id": 2,
+      "quantity": 2
+    }
+  ]
+}
