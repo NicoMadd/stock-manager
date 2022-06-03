@@ -1,15 +1,52 @@
 <script>
-  import { inputs } from "../data.json"
-  import Table from "../Table/Table.svelte"
+    import { inputs, fetchInputs, addInput, deleteInput } from "../Data/inputsData.js"
+    import Table from "../Table/Table.svelte"
+
+    let addNewInput = (input) => {
+        try {
+            validateInput(input)
+            addInput(input)
+        } catch (e) {
+            alert(e)
+            throw e
+        }
+    }
+
+    let deleteInputById = ({ id }) => {
+        console.log("delete input", id)
+        deleteInput(id)
+    }
 </script>
 
-<Table options={inputs} />
-
-<style>
-  .header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    background-color: #fafafa;
+{#await fetchInputs()}
+    <div>Fetching Inputs</div>
+{:then results}
+    <Table
+        options={$inputs}
+        addRow={addNewInput}
+        excludeColumns={["id"]}
+        elementOptions={[{ label: "Delete Input", action: deleteInputById }]}
+    />
+{/await}
+<!-- let addNewProduct = (product) => {
+  try {
+    validateProduct(product)
+    addProduct(product)
+  } catch (e) {
+    alert(e)
   }
-</style>
+}
+
+
+</script>
+
+{#await fetchProducts()}
+<div>Fetching Products</div>
+{:then results}
+<Table
+  options={$products}
+  addRow={addNewProduct}
+  excludeColumns={["id"]}
+  elementOptions={[{ label: "Delete Product", action: deleteProductById }]}
+/>
+{/await} -->

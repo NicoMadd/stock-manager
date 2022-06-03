@@ -1,17 +1,36 @@
 <script>
-  import { writable } from "svelte/store"
-  import { products } from "../data.json"
-  import Table from "../Table/Table.svelte"
+    import {
+        products,
+        fetchProducts,
+        addProduct,
+        deleteProduct,
+        validateProduct,
+    } from "../Data/productsData.js"
+    import Table from "../Table/Table.svelte"
 
-  let allProducts = writable(products)
-  let columnNames = ["ID", "Product ID", "Quantity"]
+    let addNewProduct = (product) => {
+        try {
+            validateProduct(product)
+            addProduct(product)
+        } catch (e) {
+            alert(e)
+            throw e
+        }
+    }
 
-  let addNewProduct = (product) => {
-    allProducts.push(product)
-  }
+    let deleteProductById = ({ id }) => {
+        console.log("delete product", id)
+        deleteProduct(id)
+    }
 </script>
 
-<Table options={allProducts} addRow={addNewProduct} />
-
-<style>
-</style>
+{#await fetchProducts()}
+    <div>Fetching Products</div>
+{:then results}
+    <Table
+        options={$products}
+        addRow={addNewProduct}
+        excludeColumns={["id"]}
+        elementOptions={[{ label: "Delete Product", action: deleteProductById }]}
+    />
+{/await}

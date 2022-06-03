@@ -3,7 +3,7 @@
   import { capitalize } from "./Utils/Utils.js"
 </script>
 
-<div>
+<div class="z-50">
   <ul class="flex justify-around">
     {#each options as { option, onClick }, i}
       <li class="px-2 mx-2" on:click={onClick}>

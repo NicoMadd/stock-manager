@@ -1,15 +1,20 @@
 <script>
-  import { outputs } from "../data.json"
+  import { outputs, fetchOutputs, addOutput } from "../Data/outputsData.js"
+
   import Table from "../Table/Table.svelte"
+
+  let addNewOutput = (output) => {
+    console.log($outputs)
+    //todo validar producto
+    addOutput(output)
+  }
 </script>
 
-<Table options={outputs} />
+{#await fetchOutputs()}
+  <div>Fetching Outputs</div>
+{:then results}
+  <Table options={$outputs} addRow={addNewOutput} />
+{/await}
 
 <style>
-  .output {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    background-color: #fafafa;
-  }
 </style>
