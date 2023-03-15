@@ -5,20 +5,25 @@
 
     export let addRow = undefined
     export let elementOptions = undefined
+    export let columns = []
     export let options // [{column, value}]
     export let excludeColumns = []
+    export let addColumn = undefined
 
     let showMenu = false
+    let displayNewColumnInput = false
     let formattedSelectedElement = undefined
+
     let pos = { x: 0, y: 0 }
+
     export let formatRowElement = (event) => {
         let target = event.path[1]
         return { id: target.id }
     }
 
-    let columns = [
-        ...new Set(options.map((option) => Object.keys(option)).flatMap((keys) => keys)),
-    ]
+    // let columns = [
+    //     ...new Set(options.map((option) => Object.keys(option)).flatMap((keys) => keys)),
+    // ]
 
     options.forEach((option) => {
         columns.forEach((column) => {
@@ -80,6 +85,14 @@
         } catch (e) {}
     }
 
+    let handleAddColumn = (e) => {
+        const column = document.getElementById("new-column-input")?.value
+        try {
+            displayNewColumnInput ? addColumn(column, e) : null
+            displayNewColumnInput = !displayNewColumnInput
+        } catch (ex) {}
+    }
+
     function onPageClick(e) {
         // evaluates wether the class in the event target is row-menu. Is a dependent solution ive found. :v
 
@@ -108,6 +121,25 @@
                     {#each columns as column, i}
                         <th class={thStyle}>{capitalize(column)}</th>
                     {/each}
+                    {#if addColumn}
+                        <th class={thStyle}>
+                            <div class="flex">
+                                {#if displayNewColumnInput}
+                                    <input
+                                        id="new-column-input"
+                                        class="border rounded-sm h-8 px-2 w-auto mr-4"
+                                        placeholder="New Column"
+                                    />
+                                {/if}
+                                <img
+                                    class="w-8 h-8 hover:bg-slate-400 square-full cursor-pointer"
+                                    alt="add one column"
+                                    src="square-plus.png"
+                                    on:click={handleAddColumn}
+                                />
+                            </div>
+                        </th>
+                    {/if}
                 </tr>
             </thead>
             <tbody class="bg-white dark:bg-slate-800">
@@ -143,7 +175,7 @@
         {#if addRow}
             <div class="flex items-center justify-center mt-2">
                 <img
-                    class="w-10 h-10 hover:bg-slate-400 rounded-full"
+                    class="w-8 h-8  hover:bg-slate-400 cursor-pointer rounded-full"
                     alt="add one"
                     src="plus.png"
                     on:click={handleAddRow}

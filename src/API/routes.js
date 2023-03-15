@@ -3,22 +3,26 @@ const express = require("express")
 const router = express.Router()
 
 const {
-  getProducts,
-  getInputs,
-  getOutputs,
-  addProduct,
-  addInput,
-  addOutput,
-  deleteInput,
-  deleteOutput,
-  deleteProduct,
+    productsController,
+    inputsController,
+    outputsController,
 } = require("./controller.js")
 
-router.route("/products").get(getProducts).post(addProduct)
-router.route("/inputs").get(getInputs).post(addInput)
-router.route("/outputs").get(getOutputs).post(addOutput)
-router.route("/products/:id").delete(deleteProduct)
-router.route("/inputs/:id").delete(deleteInput)
-router.route("/outputs/:id").delete(deleteOutput)
+router.route("/products").get(productsController.getAll).post(productsController.add)
+router.route("/inputs").get(inputsController.getAll).post(inputsController.add)
+router.route("/outputs").get(outputsController.getAll).post(outputsController.add)
+router
+    .route("/products/:id")
+    .delete(productsController.delete)
+    .get(productsController.getById)
+router.route("/inputs/:id").delete(inputsController.delete).get(inputsController.getById)
+router
+    .route("/outputs/:id")
+    .delete(outputsController.delete)
+    .get(outputsController.getById)
+router
+    .route("/products/columns")
+    .get(productsController.getColumns)
+    .post(productsController.addColumn)
 
 module.exports = { router }

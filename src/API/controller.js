@@ -1,89 +1,47 @@
-const data = require("./data.json")
+const productsJSON = require("./products.json")
+const inputsJSON = require("./inputs.json")
+const outputsJSON = require("./outputs.json")
 
-const products = data.products
-const inputs = data.inputs
-const outputs = data.outputs
+const { Resource } = require("./Resource.js")
+const { ResourceController } = require("./ResourceController.js")
 
-const getProducts = (req, res) => {
-    res.send({
-        products: products,
-    })
-}
+const productsPath = "./src/API/products.json"
+const inputsPath = "./src/API/inputs.json"
+const outputsPath = "./src/API/outputs.json"
 
-const getInputs = (req, res) => {
-    res.send({
-        inputs: inputs,
-    })
-}
+const products = productsJSON.elements
+const inputs = inputsJSON.elements
+const outputs = outputsJSON.elements
 
-const getOutputs = (req, res) => {
-    res.send({
-        outputs: outputs,
-    })
-}
+const productsColumns = productsJSON.columns
+const inputsColumns = inputsJSON.columns
+const outputsColumns = outputsJSON.columns
 
-const addProduct = (req, res) => {
-    const { product } = req.body
-    product.id = products.length + 1
-    console.log("newProd", { product })
-    products.push(product)
-    res.send({
-        product,
-    })
-}
+const productsResource = new Resource(
+    "products",
+    productsColumns,
+    products,
+    (resourcePath = productsPath)
+)
+const inputsResource = new Resource(
+    "inputs",
+    inputsColumns,
+    inputs,
+    (resourcePath = inputsPath)
+)
+const outputsResource = new Resource(
+    "outputs",
+    outputsColumns,
+    outputs,
+    (resourcePath = outputsPath)
+)
 
-const addInput = (req, res) => {
-    const { input } = req.body
-    inputs.push(input)
-    res.send({
-        inputs: inputs,
-    })
-}
-
-const addOutput = (req, res) => {
-    const { output } = req.body
-    outputs.push(output)
-    res.send({
-        outputs: outputs,
-    })
-}
-
-const deleteProduct = (req, res) => {
-    const { id } = req.params
-    console.log("id", id)
-    let index = products.findIndex((p) => p.id == id)
-    products.splice(index, 1)
-    res.send({
-        products,
-    })
-}
-
-const deleteInput = (req, res) => {
-    const { id } = req.params
-    let index = inputs.findIndex((i) => i.id == id)
-    inputs.splice(index, 1)
-    res.send({
-        inputs,
-    })
-}
-
-const deleteOutput = (req, res) => {
-    const { id } = req.params
-    let index = outputs.findIndex((o) => o.id == id)
-    outputs.splice(index, 1)
-    res.send({
-        outputs,
-    })
-}
+const productsController = new ResourceController(productsResource)
+const inputsController = new ResourceController(inputsResource)
+const outputsController = new ResourceController(outputsResource)
 
 module.exports = {
-    getProducts,
-    getInputs,
-    getOutputs,
-    addProduct,
-    addInput,
-    addOutput,
-    deleteInput,
-    deleteOutput,
-    deleteProduct,
+    productsController,
+    inputsController,
+    outputsController,
 }
